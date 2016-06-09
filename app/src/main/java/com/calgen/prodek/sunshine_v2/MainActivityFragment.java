@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public class MainActivityFragment extends Fragment {
 
-    String[] data = {"Today-Sunny-88/63", "Tommorow - useless","Blum blum shub"};
+    String[] data = {"Today-Sunny-88/63", "Tomorrow - useless","Blum blum shub"};
     ArrayList<String> weekForecast = new ArrayList<>(Arrays.asList(data));
 
     public MainActivityFragment() {
