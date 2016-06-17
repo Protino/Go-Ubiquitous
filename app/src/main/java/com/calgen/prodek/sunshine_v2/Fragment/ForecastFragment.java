@@ -1,9 +1,11 @@
-package com.calgen.prodek.sunshine_v2;
+package com.calgen.prodek.sunshine_v2.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
@@ -18,6 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.calgen.prodek.sunshine_v2.Activity.DetailActivity;
+import com.calgen.prodek.sunshine_v2.BuildConfig;
+import com.calgen.prodek.sunshine_v2.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +37,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -39,9 +44,9 @@ import java.util.Arrays;
 public class ForecastFragment extends Fragment {
 
     private static final String LOG_TAG = ForecastFragment.class.getSimpleName();
-    String[] forecastData = {"fake", "test"};
-    ArrayList<String> weekForecast = new ArrayList<>(Arrays.asList(forecastData));
+    SharedPreferences sharedPreferences;
     private ArrayAdapter<String> mforecastAdapter;
+    private String preferredLocation;
 
     public ForecastFragment() {
     }
@@ -54,8 +59,8 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.forecast_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -63,19 +68,32 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_refresh:
-                FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-                fetchWeatherTask.execute("Badami");
-                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateWeather() {
+        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+        preferredLocation = sharedPreferences.getString(getResources().getString(R.string.pref_location_key)
+                , getResources().getString(R.string.pref_location_default));
+        fetchWeatherTask.execute(preferredLocation);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        updateWeather();
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        mforecastAdapter = new ArrayAdapter(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForecast);
+        mforecastAdapter = new ArrayAdapter(getActivity(),
+                R.layout.list_item_forecast,
+                R.id.list_item_forecast_textview,
+                new ArrayList<String>());
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mforecastAdapter);
 
@@ -203,6 +221,17 @@ public class ForecastFragment extends Fragment {
          */
         private String formatHighLows(double high, double low) {
             // For presentation, assume the user doesn't care about tenths of a degree.
+
+            //change the unit of temperature here itself
+            String preferredUnit = sharedPreferences.getString(
+                    getResources().getString(R.string.pref_temperature_key),
+                    getResources().getString(R.string.pref_temperature_default));
+
+            if (preferredUnit.equals("imperial")) {
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            }
+
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
