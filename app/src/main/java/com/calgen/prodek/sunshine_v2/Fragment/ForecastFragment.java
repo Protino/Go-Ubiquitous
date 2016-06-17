@@ -68,6 +68,10 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         switch (id) {
+
+            case R.id.action_refresh:
+                updateWeather();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

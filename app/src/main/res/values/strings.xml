@@ -20,6 +20,7 @@
     <string name="pref_temperature_default" translatable="false">metric</string>
     <string name="pref_temperature_key" translatable="false">temperature</string>
     <string name="action_map">Map</string>
+    <string name="action_share">Share</string>
 
 
 </resources>
