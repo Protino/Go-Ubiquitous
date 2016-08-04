@@ -21,6 +21,8 @@
     <string name="pref_temperature_key" translatable="false">temperature</string>
     <string name="action_map">Map</string>
     <string name="action_share">Share</string>
+    <string name="pref_units_imperial">imperial</string>
+    <string name="pref_units_metric">metric</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.calgen.prodek.sunshine_v2.Activity;
+package com.calgen.prodek.sunshine_v2.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.calgen.prodek.sunshine_v2.Activity;
+package com.calgen.prodek.sunshine_v2.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,7 @@ import com.calgen.prodek.sunshine_v2.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         if (mapIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(mapIntent);
         } else {
-            Log.e(LOG_TAG, "Couldn't alunch the map activity");
+            Log.e(TAG, "Couldn't launch the map activity");
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.calgen.prodek.sunshine_v2.Activity;
+package com.calgen.prodek.sunshine_v2.activity;
 
 import android.os.Bundle;
 import android.preference.ListPreference;

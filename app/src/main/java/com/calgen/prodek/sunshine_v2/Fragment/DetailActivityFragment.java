@@ -1,4 +1,4 @@
-package com.calgen.prodek.sunshine_v2.Fragment;
+package com.calgen.prodek.sunshine_v2.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
