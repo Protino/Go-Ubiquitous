@@ -331,6 +331,7 @@ public class WeatherProvider extends ContentProvider {
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
+                    db.close();
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;

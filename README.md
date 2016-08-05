@@ -9,6 +9,6 @@ I had completed 70% of the Sunshine app almost 3 months. I've started the androi
 
     `MyOpenWeatherMapApiKey = "[YOUR_API_KEY_HERE]"`
 
-    You can get an API_KEY from <a href="http://openweathermap.org">Open Weather</a>
+    You can get an API_KEY from <a href="http://openweathermap.org" target="_blank">Open Weather</a>
 
    Please report issues with log errors if not possible, screenshots will do.
