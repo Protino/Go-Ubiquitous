@@ -136,7 +136,46 @@ public class Utility {
             windFormat = R.string.format_wind_mph;
             windSpeed = .621371192237334f * windSpeed;
         }
+        String direction = Utility.getWindDirection(degrees);
+        return String.format(context.getString(windFormat), windSpeed, direction);
+    }
 
+    public static String getFormattedContentDescription(Context context, float windSpeed, float degrees){
+        int windFormat;
+        if (Utility.isMetric(context)) {
+            windFormat = R.string.format_wind_kmh;
+        } else {
+            windFormat = R.string.format_wind_mph;
+            windSpeed = .621371192237334f * windSpeed;
+        }
+        String direction = Utility.getDetailedWindDirection(degrees);
+        return String.format(context.getString(windFormat), windSpeed, direction);
+    }
+
+    private static String getDetailedWindDirection(float degrees) {
+        //This is kinda stupid. But I had to do it.
+        String direction = "Unknown";
+        if (degrees >= 337.5 || degrees < 22.5) {
+            direction = "North";
+        } else if (degrees >= 22.5 && degrees < 67.5) {
+            direction = "North East";
+        } else if (degrees >= 67.5 && degrees < 112.5) {
+            direction = "East";
+        } else if (degrees >= 112.5 && degrees < 157.5) {
+            direction = "South East";
+        } else if (degrees >= 157.5 && degrees < 202.5) {
+            direction = "South";
+        } else if (degrees >= 202.5 && degrees < 247.5) {
+            direction = "South West";
+        } else if (degrees >= 247.5 && degrees < 292.5) {
+            direction = "West";
+        } else if (degrees >= 292.5 && degrees < 337.5) {
+            direction = "North West";
+        }
+        return direction;
+    }
+
+    private static String getWindDirection(float degrees) {
         // From wind direction in degrees, determine compass direction as a string (e.g NW)
         // You know what's fun, writing really long if/else statements with tons of possible
         // conditions.  Seriously, try it!
@@ -158,7 +197,7 @@ public class Utility {
         } else if (degrees >= 292.5 && degrees < 337.5) {
             direction = "NW";
         }
-        return String.format(context.getString(windFormat), windSpeed, direction);
+        return direction;
     }
 
 
