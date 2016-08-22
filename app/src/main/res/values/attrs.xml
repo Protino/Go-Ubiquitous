@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CompassView">
+        <attr name="direction" format="enum">
+            <enum name="n" value="0" />
+            <enum name="ne" value="1" />
+            <enum name="e" value="2" />
+            <enum name="se" value="3" />
+            <enum name="s" value="4" />
+            <enum name="sw" value="5" />
+            <enum name="w" value="6" />
+            <enum name="nw" value="7" />
+        </attr>
+        <attr name="speed" format="enum">
+            <enum name="low" value="0" />
+            <enum name="moderate" value="1" />
+            <enum name="high" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
