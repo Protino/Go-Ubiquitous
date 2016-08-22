@@ -8,9 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.calgen.prodek.sunshine_v2.R;
+import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.fragment.DetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private static final String TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +22,13 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Weather Detail");
         if (savedInstanceState == null) {
 
             Bundle arguments = new Bundle();
             arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
-
+            String date = (getIntent().getData()).getLastPathSegment();
+            date = Utility.getFormattedMonthDay(this,Long.parseLong(date));
+            getWindow().getDecorView().setContentDescription("Weather details for "+date);
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
 

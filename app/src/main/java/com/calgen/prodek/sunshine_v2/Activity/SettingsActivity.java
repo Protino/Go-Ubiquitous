@@ -1,9 +1,7 @@
 package com.calgen.prodek.sunshine_v2.activity;
 
-import android.annotation.TargetApi;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -17,6 +15,8 @@ import com.calgen.prodek.sunshine_v2.R;
  */
 public class SettingsActivity extends AppCompactPreferenceActivity implements Preference.OnPreferenceChangeListener {
 
+    private static final String TAG = SettingsActivity.class.getSimpleName();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +29,8 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_temperature_key)));
+        CheckBoxPreference notificationPreference = (CheckBoxPreference) findPreference(getResources().getString(R.string.pref_notification_key));
+        notificationPreference.setOnPreferenceChangeListener(this);
     }
 
 
@@ -73,14 +75,9 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
-            preference.setSummary(stringValue);
+            if (!(preference instanceof CheckBoxPreference))
+                preference.setSummary(stringValue);
         }
         return true;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public Intent getParentActivityIntent() {
-        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 }

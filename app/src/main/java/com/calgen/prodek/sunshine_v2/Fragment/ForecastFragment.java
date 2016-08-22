@@ -9,9 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,7 +17,6 @@ import android.widget.ListView;
 import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.adapter.ForecastAdapter;
-import com.calgen.prodek.sunshine_v2.data.FetchWeatherTask;
 import com.calgen.prodek.sunshine_v2.data.WeatherContract;
 
 /**
@@ -75,7 +71,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         setRetainInstance(true);
         super.onCreate(savedInstanceState);
     }
@@ -88,31 +83,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forecast_fragment, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-
-            case R.id.action_refresh:
-                updateWeather();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateWeather();
-    }
 
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
@@ -192,13 +162,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.swapCursor(null);
     }
 
-    private void updateWeather() {
-        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity());
-        fetchWeatherTask.execute(Utility.getPreferredLocation(getContext()));
-    }
-
     public void onLocationChanged() {
-        updateWeather();
         getLoaderManager().restartLoader(MY_LOADER_ID, null, this);
     }
 

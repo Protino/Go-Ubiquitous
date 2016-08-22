@@ -15,6 +15,7 @@ import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.fragment.DetailFragment;
 import com.calgen.prodek.sunshine_v2.fragment.ForecastFragment;
+import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
 
@@ -43,8 +44,10 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             mTwoPane = false;
         }
 
-        ForecastFragment forecastFragment= (ForecastFragment)(getSupportFragmentManager().findFragmentById(R.id.fragment_forecast));
+        ForecastFragment forecastFragment = (ForecastFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
 
     }
 
@@ -131,6 +134,5 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             startActivity(new Intent(this, DetailActivity.class).setData(dateUri));
         }
     }
-
 
 }

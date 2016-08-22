@@ -27,6 +27,12 @@ public class Utility {
                 .equals(context.getString(R.string.pref_units_metric));
     }
 
+    public static boolean isNotificationOn(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(context.getString(R.string.pref_notification_key),
+                Boolean.parseBoolean(context.getString(R.string.pref_notification_default)));
+    }
+
     public static String formatTemperature(Context context, double temperature, boolean isMetric) {
         double temp;
         if (!isMetric) {
@@ -140,7 +146,7 @@ public class Utility {
         return String.format(context.getString(windFormat), windSpeed, direction);
     }
 
-    public static String getFormattedContentDescription(Context context, float windSpeed, float degrees){
+    public static String getFormattedContentDescription(Context context, float windSpeed, float degrees) {
         int windFormat;
         if (Utility.isMetric(context)) {
             windFormat = R.string.format_wind_kmh;
@@ -204,6 +210,7 @@ public class Utility {
     /**
      * Helper method to provide the icon resource id according to the weather condition id returned
      * by the OpenWeatherMap call.
+     *
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
@@ -239,6 +246,7 @@ public class Utility {
     /**
      * Helper method to provide the art resource id according to the weather condition id returned
      * by the OpenWeatherMap call.
+     *
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding image. -1 if no relation is found.
      */

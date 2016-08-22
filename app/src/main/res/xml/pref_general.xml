@@ -17,5 +17,9 @@
         android:key="@string/pref_temperature_key"
         android:title="@string/pref_temperature_label" />
 
-
+    <CheckBoxPreference
+        android:defaultValue="@string/pref_notification_default"
+        android:key="@string/pref_notification_key"
+        android:title="@string/pref_notification_title"
+        />
 </PreferenceScreen>
