@@ -13,6 +13,7 @@
 
     <string name="pref_location_key" translatable="false">location</string>
     <string name="pref_location_default" translatable="false">Bagalkot</string>
+    <string name="pref_location_status_key">LOCATION_STATUS_KEY</string>
 
 
     <!-- Temperature Settings -->
@@ -64,4 +65,11 @@
     <string name="pref_notification_key">notification_key</string>
     <string name="pref_notification_title">Notifications</string>
     <string name="pref_notification_default">true</string>
+
+    <!-- Error messages-->
+    <string name="empty_forecast_list">No weather information available.</string>
+    <string name="empty_forecast_list_no_network">No weather information available. The network is not available to fetch weather data. </string>
+    <string name="empty_forecast_list_server_down">No weather information available. The server is not returning data.</string>
+    <string name="empty_forecast_list_server_error">No weather information available. The server is not returning valid data. Please check for an updated version of Sunshine.</string>
+
 </resources>

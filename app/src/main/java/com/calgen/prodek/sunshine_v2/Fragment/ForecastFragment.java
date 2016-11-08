@@ -1,8 +1,10 @@
 package com.calgen.prodek.sunshine_v2.fragment;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -13,16 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.adapter.ForecastAdapter;
 import com.calgen.prodek.sunshine_v2.data.WeatherContract;
+import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LocationStatus;
+
+import static com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN;
+import static com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
@@ -58,6 +65,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private static int mPosition;
     private ForecastAdapter mForecastAdapter;
     private ListView mListView;
+    private TextView mEmptyView;
     private boolean mUseTodayLayout;
 
     public ForecastFragment() {
@@ -99,6 +107,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mForecastAdapter);
+
 
         //set click listeners on the list items
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,6 +164,30 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             // to, do so now.
             mListView.smoothScrollToPosition(mPosition);
         }
+        updateEmptyView();
+    }
+
+    private void updateEmptyView() {
+        if (mForecastAdapter.getCount() == 0) {
+            mEmptyView = (TextView) getView().findViewById(R.id.empty_view);
+            if (mEmptyView != null) {
+                int message = R.string.empty_forecast_list;
+                @LocationStatus int status = Utility.getLocationStatus(getContext());
+                switch (status) {
+                    case LOCATION_STATUS_SERVER_DOWN:
+                        message = R.string.empty_forecast_list_server_down;
+                        break;
+                    case LOCATION_STATUS_SERVER_INVALID:
+                        message = R.string.empty_forecast_list_server_error;
+                        break;
+                    default:
+                        if (!Utility.isNetworkAvailable(getContext())) {
+                            message = R.string.empty_forecast_list_no_network;
+                        }
+                }
+                mEmptyView.setText(message);
+            }
+        }
     }
 
     @Override
@@ -164,6 +197,25 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void onLocationChanged() {
         getLoaderManager().restartLoader(MY_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_location_status_key))) updateEmptyView();
     }
 
 

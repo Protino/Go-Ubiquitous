@@ -27,7 +27,7 @@ import com.calgen.prodek.sunshine_v2.data.WeatherContract.WeatherEntry;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class    DetailActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     // These indices are tied to DETAIL_COLUMNS.  If DETAIL_COLUMNS changes, these

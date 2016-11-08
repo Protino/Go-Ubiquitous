@@ -2,8 +2,12 @@ package com.calgen.prodek.sunshine_v2;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
+
+import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -279,4 +283,27 @@ public class Utility {
         return -1;
     }
 
+    /**
+     * @param context {@link Context} to fetch defaultSharedPreferences
+     * @return True if connected to a network else false
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
+    /**
+     * @param context {@link Context} to fetch defaultSharedPreferences
+     * @return the location status integer type
+     */
+    @SuppressWarnings("ResourceType")
+    public static
+    @SunshineSyncAdapter.LocationStatus
+    int getLocationStatus(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getInt(context.getString(R.string.pref_location_status_key),
+                SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+    }
 }

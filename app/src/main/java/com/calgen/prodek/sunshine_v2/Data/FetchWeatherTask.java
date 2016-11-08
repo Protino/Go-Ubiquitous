@@ -77,6 +77,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             Uri insertedUri = mContext.getContentResolver().insert(WeatherContract.LocationEntry.CONTENT_URI, values);
             locationId = ContentUris.parseId(insertedUri);
         }
+        cursor.close();
         return locationId;
     }
 
