@@ -37,9 +37,9 @@ public class Utility {
                 Boolean.parseBoolean(context.getString(R.string.pref_notification_default)));
     }
 
-    public static String formatTemperature(Context context, double temperature, boolean isMetric) {
+    public static String formatTemperature(Context context, double temperature) {
         double temp;
-        if (!isMetric) {
+        if (!isMetric(context)) {
             temp = 9 * temperature / 5 + 32;
         } else {
             temp = temperature;
@@ -305,5 +305,12 @@ public class Utility {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(context.getString(R.string.pref_location_status_key),
                 SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+    }
+
+    public static void resetLocationStatus(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor spe = sp.edit();
+        spe.putInt(context.getString(R.string.pref_location_status_key), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+        spe.apply();
     }
 }

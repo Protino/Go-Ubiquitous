@@ -1,5 +1,6 @@
 package com.calgen.prodek.sunshine_v2.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -9,11 +10,14 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import com.calgen.prodek.sunshine_v2.R;
+import com.calgen.prodek.sunshine_v2.Utility;
+import com.calgen.prodek.sunshine_v2.data.WeatherContract;
+import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
 
 /**
  * Created by Gurupad on 15-Jun-16.
  */
-public class SettingsActivity extends AppCompactPreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class SettingsActivity extends AppCompactPreferenceActivity implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
@@ -61,6 +65,7 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
                         .getString(preference.getKey(), ""));
     }
 
+
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
@@ -75,9 +80,33 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
-            if (!(preference instanceof CheckBoxPreference))
-                preference.setSummary(stringValue);
+            if (!(preference instanceof CheckBoxPreference)) preference.setSummary(stringValue);
+
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_location_key))) {
+            Utility.resetLocationStatus(this);
+            SunshineSyncAdapter.syncImmediately(this);
+        } else if (key.equals(getString(R.string.pref_temperature_key))) {
+            getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
+        }
     }
 }

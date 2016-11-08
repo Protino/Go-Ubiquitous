@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -23,6 +22,7 @@ import com.calgen.prodek.sunshine_v2.adapter.ForecastAdapter;
 import com.calgen.prodek.sunshine_v2.data.WeatherContract;
 import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LocationStatus;
 
+import static com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LOCATION_STATUS_INVALID;
 import static com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN;
 import static com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID;
 
@@ -91,7 +91,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onSaveInstanceState(outState);
     }
 
-
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
         if (mForecastAdapter != null) {
@@ -105,12 +104,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
         mForecastAdapter.setmUseTodayLayout(mUseTodayLayout);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View emptyView = rootView.findViewById(R.id.empty_view);
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mForecastAdapter);
+        mListView.setEmptyView(emptyView);
 
 
         //set click listeners on the list items
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
@@ -137,7 +139,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         return rootView;
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -167,6 +168,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         updateEmptyView();
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mForecastAdapter.swapCursor(null);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    public void onLocationChanged() {
+        getLoaderManager().restartLoader(MY_LOADER_ID, null, this);
+    }
+
     private void updateEmptyView() {
         if (mForecastAdapter.getCount() == 0) {
             mEmptyView = (TextView) getView().findViewById(R.id.empty_view);
@@ -180,6 +191,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     case LOCATION_STATUS_SERVER_INVALID:
                         message = R.string.empty_forecast_list_server_error;
                         break;
+                    case LOCATION_STATUS_INVALID:
+                        message = R.string.empty_forecast_list_invalid_location;
+                        break;
                     default:
                         if (!Utility.isNetworkAvailable(getContext())) {
                             message = R.string.empty_forecast_list_no_network;
@@ -191,39 +205,22 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mForecastAdapter.swapCursor(null);
-    }
-
-    public void onLocationChanged() {
-        getLoaderManager().restartLoader(MY_LOADER_ID, null, this);
-    }
-
-    @Override
-    public void onResume() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.registerOnSharedPreferenceChangeListener(this);
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.unregisterOnSharedPreferenceChangeListener(this);
-        super.onPause();
-    }
-
-    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(getString(R.string.pref_location_status_key))) updateEmptyView();
+        if (key.equals(getString(R.string.pref_location_status_key))) {
+            updateEmptyView();
+        }
     }
 
-
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
     public interface Callback {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        void onItemSelected(Uri dateUri);
+        public void onItemSelected(Uri dateUri);
     }
 
 }

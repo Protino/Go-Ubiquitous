@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
