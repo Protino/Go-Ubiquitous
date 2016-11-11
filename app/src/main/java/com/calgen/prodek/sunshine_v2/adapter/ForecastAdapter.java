@@ -37,7 +37,7 @@ public class ForecastAdapter extends CursorAdapter {
         return highLowStr;
     }
 
-    public void setmUseTodayLayout(boolean useTodayLayout){
+    public void setUseTodayLayout(boolean useTodayLayout){
         mUseTodayLayout = useTodayLayout;
     }
 

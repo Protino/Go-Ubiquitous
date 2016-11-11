@@ -20,7 +20,7 @@ import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
 public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
     private static final String PANE_TYPE = "pane_type";
     private static boolean mTwoPane;
     private String mLocation;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAIL_FRAGMENT_TAG)
                         .commit();
             }
         } else {
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             if (null != ff) {
                 ff.onLocationChanged();
             }
-            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
             if (null != df) {
                 df.onLocationChanged(location);
             }
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             fragment.setArguments(bundle);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .replace(R.id.weather_detail_container, fragment, DETAIL_FRAGMENT_TAG)
                     .commit();
 
         } else {

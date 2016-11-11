@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="com.calgen.prodek.sunshine_v2.customView.LocationEditText"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditTextPreference
+    <com.calgen.prodek.sunshine_v2.customView.LocationEditText
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:key="@string/pref_location_key"
         android:singleLine="true"
-        android:title="@string/pref_location_label" />
+        android:title="@string/pref_location_label"
+        custom:minLength="3"
+        />
 
     <ListPreference
         android:defaultValue="@string/pref_temperature_default"
         android:entries="@array/pref_unit_titles"
         android:entryValues="@array/pref_unit_values"
         android:key="@string/pref_temperature_key"
-        android:title="@string/pref_temperature_label" />
+        android:title="@string/pref_temperature_label"/>
 
     <CheckBoxPreference
         android:defaultValue="@string/pref_notification_default"

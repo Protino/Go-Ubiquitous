@@ -3,6 +3,7 @@ package com.calgen.prodek.sunshine_v2.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -80,7 +81,22 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
             }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
-            if (!(preference instanceof CheckBoxPreference)) preference.setSummary(stringValue);
+            if (!(preference instanceof CheckBoxPreference)) {
+                if (preference instanceof EditTextPreference) {
+                    @SunshineSyncAdapter.LocationStatus int status = Utility.getLocationStatus(this);
+                    switch (status) {
+                        case SunshineSyncAdapter.LOCATION_STATUS_OK:
+                            break;
+                        case SunshineSyncAdapter.LOCATION_STATUS_INVALID:
+                            stringValue = String.format(getString(R.string.pref_location_error_description), stringValue);
+                            break;
+                        default:
+                            stringValue = String.format(getString(R.string.pref_location_unknown_description), stringValue);
+                            break;
+                    }
+                }
+                preference.setSummary(stringValue);
+            }
 
         }
         return true;
