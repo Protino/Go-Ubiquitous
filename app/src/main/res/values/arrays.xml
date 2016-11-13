@@ -8,4 +8,14 @@
         <item>metric</item>
         <item>imperial</item>
     </string-array>
+
+    <string-array name="pref_icon_pack_titles">
+        <item name="Mono">Mono</item>
+        <item name="Colored">Colored</item>
+    </string-array>
+    <string-array name="pref_icon_pack_values">
+        <item>Mono</item>
+        <item>Colored</item>
+    </string-array>
+
 </resources>

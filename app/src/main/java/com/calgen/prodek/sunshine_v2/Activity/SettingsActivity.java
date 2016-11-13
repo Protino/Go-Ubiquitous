@@ -33,6 +33,7 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_icon_pack_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_temperature_key)));
         CheckBoxPreference notificationPreference = (CheckBoxPreference) findPreference(getResources().getString(R.string.pref_notification_key));
         notificationPreference.setOnPreferenceChangeListener(this);

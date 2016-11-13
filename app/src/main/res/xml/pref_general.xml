@@ -21,6 +21,13 @@
         android:key="@string/pref_temperature_key"
         android:title="@string/pref_temperature_label"/>
 
+    <ListPreference
+        android:defaultValue="@string/pref_icon_pack_default"
+        android:entries="@array/pref_icon_pack_titles"
+        android:entryValues="@array/pref_icon_pack_values"
+        android:key="@string/pref_icon_pack_key"
+        android:title="@string/pref_icon_pack_label"/>
+
     <CheckBoxPreference
         android:defaultValue="@string/pref_notification_default"
         android:key="@string/pref_notification_key"

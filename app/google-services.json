@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "29065058461",
+    "firebase_url": "https://sunshine-149409.firebaseio.com",
+    "project_id": "sunshine-149409",
+    "storage_bucket": "sunshine-149409.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29065058461:android:5220e06c88366bdb",
+        "android_client_info": {
+          "package_name": "com.calgen.prodek.sunshine_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29065058461-mt74mvcku8apthekiroa3v18rhkir5ku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy7jH9raupaBQBCrfeZdQ0Og2MeYIOS7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

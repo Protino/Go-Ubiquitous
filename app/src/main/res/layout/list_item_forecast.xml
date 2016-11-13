@@ -2,12 +2,12 @@
 
 <!-- Layout for weather forecast list item for future day (not today) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:background="@drawable/touch_selector">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/touch_selector"
+              android:gravity="center_vertical"
+              android:minHeight="?android:attr/listPreferredItemHeight"
+              android:orientation="horizontal">
 
     <FrameLayout
         android:layout_width="60dp"
@@ -15,15 +15,16 @@
 
         <ImageView
             android:id="@+id/list_item_icon"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"/>
 
     </FrameLayout>
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="7"
         android:orientation="vertical">
 
@@ -45,8 +46,8 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
         android:layout_gravity="center"
+        android:layout_weight="5"
         android:orientation="vertical">
 
         <TextView
