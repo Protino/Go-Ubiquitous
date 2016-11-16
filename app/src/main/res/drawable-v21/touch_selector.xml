@@ -10,7 +10,7 @@
     <!-- When the view is "activated".  In SINGLE_CHOICE_MODE, it flags the active row
          of a ListView -->
     <item android:state_activated="true"
-        android:drawable="@color/sunshine_light_blue" />
+        android:drawable="@color/colorPrimaryLight" />
 
     <!-- Default, "just hangin' out" state. -->
     <item android:drawable="@android:color/transparent" />

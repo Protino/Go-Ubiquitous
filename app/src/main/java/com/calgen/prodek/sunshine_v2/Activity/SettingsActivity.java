@@ -6,6 +6,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
 /**
  * Created by Gurupad on 15-Jun-16.
  */
-public class SettingsActivity extends AppCompactPreferenceActivity implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
@@ -27,8 +28,6 @@ public class SettingsActivity extends AppCompactPreferenceActivity implements Pr
         super.onCreate(savedInstanceState);
         // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
