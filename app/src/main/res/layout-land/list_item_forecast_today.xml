@@ -1,0 +1,13 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_selector_white"
+    android:elevation="@dimen/appbar_elevation"
+    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
+    >
+    <include layout="@layout/list_item_base_forecast_today"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+        />
+</FrameLayout>

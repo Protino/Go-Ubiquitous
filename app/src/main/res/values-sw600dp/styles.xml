@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ForecastListStyle">
+    <style name="ForecastStyle">
         <item name="android:choiceMode">singleChoice</item>
     </style>
 </resources>

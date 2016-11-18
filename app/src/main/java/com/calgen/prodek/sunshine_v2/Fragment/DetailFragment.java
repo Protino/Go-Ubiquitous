@@ -9,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -62,6 +64,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
     };
+    public static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     private Uri mUri;
     private ShareActionProvider mShareActionProvider;
     private String mForecast;
@@ -76,6 +79,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mHumidityLabelView;
     private TextView mPressureLabelView;
     private TextView mWindLabelView;
+    private boolean transitionAnimation;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -88,9 +92,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
+            transitionAnimation = arguments.getBoolean(DETAIL_TRANSITION_ANIMATION);
         }
 
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail_start, container, false);
         mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
         mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
         mDescriptionView = (TextView) rootView.findViewById(R.id.detail_forecast_textview);
@@ -159,12 +164,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     null
             );
         }
+        ViewParent viewParent = getView().getParent();
+        if (viewParent instanceof CardView){
+            ((CardView) viewParent).setVisibility(View.INVISIBLE);
+        }
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
+
+            ViewParent viewParent = getView().getParent();
+            if (viewParent instanceof CardView){
+                ((CardView) viewParent).setVisibility(View.VISIBLE);
+            }
+
             // Read weather condition ID from cursor
             int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
 
@@ -174,7 +189,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 //                mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 //            } else {
             // Use weather art image
-            Glide.with(this)
+            Glide.with(getActivity())
                     .load(Utility.getArtUrlForWeatherCondition(getActivity(), weatherId))
                     .error(Utility.getArtResourceForWeatherCondition(weatherId))
                     .crossFade()
@@ -242,7 +257,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Toolbar toolbarView = (Toolbar) getView().findViewById(R.id.toolbar);
 
         // We need to start the enter transition after the data has loaded
-        if (activity instanceof DetailActivity) {
+        if (transitionAnimation) {
             activity.supportStartPostponedEnterTransition();
 
             if (null != toolbarView) {

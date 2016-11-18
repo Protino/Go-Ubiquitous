@@ -36,13 +36,12 @@ public class MyFcmListenerService extends FirebaseMessagingService {
             if (senderId.length() == 0) {
                 Log.e(TAG, "SenderID string needs to be set");
             }
-/*
             if ((senderId).equals(from)) {
-                String weather = data.getString(EXTRA_WEATHER);
-                String location = data.getString(EXTRA_LOCATION);
+                String weather = (String) data.get(EXTRA_WEATHER);
+                String location = (String) data.get(EXTRA_LOCATION);
                 String alert = String.format(getString(R.string.gcm_weather_alert), weather, location);
                 sendNotification(alert);
-            }*/
+            }
             Log.i(TAG, "onMessageReceived: " + data.toString());
         }
     }

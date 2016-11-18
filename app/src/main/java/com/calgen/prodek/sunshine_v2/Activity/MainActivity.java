@@ -5,14 +5,19 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
+import com.calgen.prodek.sunshine_v2.adapter.ForecastAdapter;
 import com.calgen.prodek.sunshine_v2.fragment.DetailFragment;
 import com.calgen.prodek.sunshine_v2.fragment.ForecastFragment;
 import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
@@ -21,7 +26,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
 
-    public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
     private static final String PANE_TYPE = "pane_type";
@@ -53,23 +57,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
-
-        // If Google Play Services is up to date, we'll want to register GCM. If it is not, we'll
-        // skip the registration and this device will not receive any downstream messages from
-        // our fake server. Because weather alerts are not a core feature of the app, this should
-        // not affect the behavior of the app, from a user perspective.
-        if (checkPlayServices()) {
-            // Because this is the initial creation of the app, we'll want to be certain we have
-            // a token. If we do not, then we will start the IntentService that will register this
-            // application with GCM.
-            SharedPreferences sharedPreferences =
-                    PreferenceManager.getDefaultSharedPreferences(this);
-            boolean sentToken = sharedPreferences.getBoolean(SENT_TOKEN_TO_SERVER, false);
-            if (!sentToken) {
-                //Intent intent = new Intent(this, RegistrationIntentService.class);
-                //startService(intent);
-            }
-        }
     }
 
 
@@ -126,12 +113,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     protected void onResume() {
         super.onResume();
 
-        // If Google Play Services is not available, some features, such as GCM-powered weather
-        // alerts, will not be available.
-        if (!checkPlayServices()) {
-            // Store regID as null
-        }
-
         String location = Utility.getPreferredLocation(this);
         // update the location in our second pane using the fragment manager
         if (location != null && !location.equals(mLocation)) {
@@ -148,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     }
 
     @Override
-    public void onItemSelected(Uri dateUri) {
+    public void onItemSelected(Uri dateUri, ForecastAdapter.ViewHolder viewHolder) {
         if (mTwoPane) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(DetailFragment.DETAIL_URI, dateUri);
@@ -161,7 +142,12 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                     .commit();
 
         } else {
-            startActivity(new Intent(this, DetailActivity.class).setData(dateUri));
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.setData(dateUri);
+            ActivityOptionsCompat activityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this
+                            , new Pair<View, String>(viewHolder.mIconView, getString(R.string.detail_icon_transition_name)));
+            ActivityCompat.startActivity(this, intent, activityOptionsCompat.toBundle());
         }
     }
 
