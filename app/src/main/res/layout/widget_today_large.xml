@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="@dimen/widget_margin">
+
+    <RelativeLayout
+        android:id="@+id/widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/widget_icon"
+            android:layout_width="@dimen/widget_min_resize_width"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            tools:src="@drawable/art_clear"/>
+
+        <TextView
+            android:id="@+id/widget_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/widget_icon"
+            android:layout_toRightOf="@id/widget_icon"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"
+            tools:text="Clear"/>
+
+        <TextView
+            android:id="@+id/widget_high_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toLeftOf="@id/widget_low_temp"
+            android:layout_toStartOf="@id/widget_low_temp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="end"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/forecast_text_size"
+            tools:text="10"/>
+
+        <TextView
+            android:id="@+id/widget_low_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:gravity="end"
+            android:textColor="@color/grey_100"
+            android:textSize="@dimen/forecast_text_size_low"
+            tools:text="7"/>
+    </RelativeLayout>
+</FrameLayout>

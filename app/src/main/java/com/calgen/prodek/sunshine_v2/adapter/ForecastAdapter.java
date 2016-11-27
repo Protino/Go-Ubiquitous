@@ -74,12 +74,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
         int defaultImage;
 
-        switch (getItemViewType(cursor.getPosition())) {
+        boolean useLongToday;
+
+        switch (getItemViewType(position)) {
             case VIEW_TYPE_TODAY:
                 defaultImage = Utility.getArtResourceForWeatherCondition(weatherId);
+                useLongToday = true;
                 break;
             default:
                 defaultImage = Utility.getIconResourceForWeatherCondition(weatherId);
+                useLongToday = false;
         }
 
         Glide.with(mContext)
@@ -92,7 +96,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         // Find TextView and set formatted date on it
-        holder.mDateView.setText(Utility.getFriendlyDayString(mContext, dateInMillis));
+        holder.mDateView.setText(Utility.getFriendlyDayString(mContext, dateInMillis, useLongToday));
 
         // Read weather forecast from cursor
         String description = Utility.getStringForWeatherCondition(mContext, weatherId);

@@ -35,6 +35,7 @@ import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.activity.MainActivity;
 import com.calgen.prodek.sunshine_v2.data.WeatherContract;
+import com.calgen.prodek.sunshine_v2.muzei.WeatherMuzeiSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +64,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int LOCATION_STATUS_SERVER_INVALID = 2;
     public static final int LOCATION_STATUS_UNKNOWN = 3;
     public static final int LOCATION_STATUS_INVALID = 4;
+    public static final String ACTION_DATA_UPDATED = "com.calgen.prodek.sunshine_v2.ACTION_DATA_UPDATED";
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int WEATHER_NOTIFICATION_ID = 3004;
     private static final String[] NOTIFY_WEATHER_PROJECTION = new String[]{
@@ -447,6 +449,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                         WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
                         new String[]{Long.toString(dayTime.setJulianDay(julianStartDay - 1))});
 
+                updateWidgets();
+                updateMuzei();
                 notifyWeather();
             }
             Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
@@ -458,6 +462,24 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         }
     }
+
+    private void updateWidgets() {
+        Context context = getContext();
+        Intent intent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(intent);
+    }
+
+    private void updateMuzei() {
+        // Muzei is only compatible with Jelly Bean MR1+ devices, so there's no need to update the
+        // Muzei background on lower API level devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Context context = getContext();
+            context.startService(new Intent(ACTION_DATA_UPDATED)
+                    .setClass(context, WeatherMuzeiSource.class));
+        }
+    }
+
 
     private void notifyWeather() {
         Context context = getContext();

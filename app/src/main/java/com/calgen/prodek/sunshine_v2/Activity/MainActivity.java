@@ -18,18 +18,16 @@ import android.view.View;
 import com.calgen.prodek.sunshine_v2.R;
 import com.calgen.prodek.sunshine_v2.Utility;
 import com.calgen.prodek.sunshine_v2.adapter.ForecastAdapter;
+import com.calgen.prodek.sunshine_v2.data.WeatherContract;
 import com.calgen.prodek.sunshine_v2.fragment.DetailFragment;
 import com.calgen.prodek.sunshine_v2.fragment.ForecastFragment;
 import com.calgen.prodek.sunshine_v2.sync.SunshineSyncAdapter;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
     private static final String PANE_TYPE = "pane_type";
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static boolean mTwoPane;
     private String mLocation;
 
@@ -41,12 +39,21 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         mLocation = Utility.getPreferredLocation(this);
+
+        Uri contentUri = getIntent() != null ? getIntent().getData() : null;
+
         if (findViewById(R.id.weather_detail_container) != null) {
             mTwoPane = true;
 
             if (savedInstanceState == null) {
+                DetailFragment detailFragment = new DetailFragment();
+                if (contentUri != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(DetailFragment.DETAIL_URI, contentUri);
+                    detailFragment.setArguments(bundle);
+                }
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAIL_FRAGMENT_TAG)
+                        .replace(R.id.weather_detail_container, detailFragment, DETAIL_FRAGMENT_TAG)
                         .commit();
             }
         } else {
@@ -55,7 +62,11 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
         ForecastFragment forecastFragment = (ForecastFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
-
+        if (contentUri != null) {
+            forecastFragment.setInitialSelectedDate(
+                    WeatherContract.WeatherEntry.getDateFromUri(contentUri)
+            );
+        }
         SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
@@ -149,28 +160,5 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                             , new Pair<View, String>(viewHolder.mIconView, getString(R.string.detail_icon_transition_name)));
             ActivityCompat.startActivity(this, intent, activityOptionsCompat.toBundle());
         }
-    }
-
-    /**
-     * Check the device to make sure it has the Google Play Services APK.
-     * If it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     *
-     * @return true if PlayServices is available else false
-     */
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i(TAG, "This device is not supported");
-                finish();
-            }
-            return false;
-        }
-        return true;
     }
 }

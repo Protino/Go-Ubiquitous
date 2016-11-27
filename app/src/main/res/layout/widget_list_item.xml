@@ -1,9 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/widget_list_item"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="@drawable/touch_selector"
-             android:paddingLeft="@dimen/list_item_extra_padding"
-             android:paddingRight="@dimen/list_item_extra_padding">
+             android:background="@drawable/touch_selector_white">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,13 +15,15 @@
         android:paddingRight="@dimen/abc_list_item_padding_horizontal_material">
 
         <ImageView
-            android:id="@+id/list_item_icon"
+            android:id="@+id/widget_icon"
             android:layout_width="@dimen/list_icon"
             android:layout_height="@dimen/list_icon"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
             android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material"
+            tools:src="@drawable/ic_clear"
             />
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,22 +31,25 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/list_item_date_textview"
+                android:id="@+id/widget_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                android:text="Today, May 21"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/primary_text"/>
 
             <TextView
-                android:id="@+id/list_item_forecast_textview"
+                android:id="@+id/widget_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@color/secondary_text"/>
+                android:textColor="@color/secondary_text"
+                tools:text="@string/condition_500"/>
         </LinearLayout>
 
         <TextView
-            android:id="@+id/list_item_high_textview"
-            android:layout_width="@dimen/forecast_text_width"
+            android:id="@+id/widget_high_temperature"
+            android:layout_width="@dimen/forecast_widget_text_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/forecast_temperature_space"
@@ -51,17 +57,19 @@
             android:fontFamily="sans-serif-light"
             android:gravity="right"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/forecast_text_size"/>
+            android:textSize="@dimen/forecast_widget_text_size"
+            tools:text="10"/>
 
         <TextView
-            android:id="@+id/list_item_low_textview"
-            android:layout_width="@dimen/forecast_text_width"
+            android:id="@+id/widget_low_temperature"
+            android:layout_width="@dimen/forecast_widget_text_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="sans-serif-light"
             android:gravity="right"
             android:textColor="@color/forecast_low_text"
-            android:textSize="@dimen/forecast_text_size"/>
+            android:textSize="@dimen/forecast_widget_text_size"
+            tools:text="7"/>
 
     </LinearLayout>
 </FrameLayout>

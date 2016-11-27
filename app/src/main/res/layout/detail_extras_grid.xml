@@ -25,7 +25,8 @@
         android:textColor="@color/detail_accent_label"
         app:layout_columnWeight="1"
         app:layout_gravity="fill"
-        app:layout_rowWeight="1" />
+        app:layout_rowWeight="1"
+        tools:text="Clear"/>
 
     <TextView
         android:id="@+id/detail_humidity_textview"
@@ -33,7 +34,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
         app:layout_gravity="fill"
-        tools:text="38%" />
+        tools:text="38%"/>
 
     <TextView
         android:id="@+id/detail_pressure_label_textview"
@@ -43,7 +44,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/detail_accent_label"
         app:layout_gravity="fill"
-        app:layout_rowWeight="1" />
+        app:layout_rowWeight="1"
+        tools:text="342"/>
 
     <TextView
         android:id="@+id/detail_pressure_textview"
@@ -51,7 +53,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
         app:layout_gravity="fill"
-        tools:text="995 hPa" />
+        tools:text="995 hPa"/>
 
     <TextView
         android:id="@+id/detail_wind_label_textview"
@@ -61,7 +63,8 @@
         android:textColor="@color/detail_accent_label"
         android:textSize="20sp"
         app:layout_gravity="fill"
-        app:layout_rowWeight="1" />
+        app:layout_rowWeight="1"
+        tools:text="3242432"/>
 
 
     <TextView
@@ -70,5 +73,5 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@android:color/white"
         app:layout_gravity="fill"
-        tools:text="4km/h NW" />
+        tools:text="4km/h NW"/>
 </android.support.v7.widget.GridLayout>

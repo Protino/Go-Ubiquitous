@@ -163,5 +163,12 @@
     <string name="condition_unknown">Unknown (<xliff:g id="low">%1$s</xliff:g>)</string>
 
     <string name="detail_icon_transition_name" translatable="false">DETAIL_ICON_TN</string>
+    <string name="title_today_widget">Sunshine Today</string>
+    <string name="title_detail_widget">Sunshine Details</string>
+
+    <string name="muzei_description">Today\'s weather</string>
+
+
+    <string name="pref_current_location_desc">Use my location</string>
 
 </resources>

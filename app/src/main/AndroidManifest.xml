@@ -24,6 +24,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="API-KEY"/>
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
@@ -107,6 +110,53 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent"/>
+
+        <!--Today Widget receiver and service-->
+        <receiver
+            android:name=".widget.TodayWidgetProvider"
+            android:label="@string/title_today_widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.calgen.prodek.sunshine_v2.ACTION_DATA_UPDATED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_today"/>
+        </receiver>
+        <service android:name=".widget.TodayWidgetIntentService"/>
+
+        <!-- Detail Widget receiver and service-->
+        <receiver
+            android:name=".widget.DetailWidgetProvider"
+            android:enabled="@bool/widget_detail_enabled"
+            android:label="@string/title_detail_widget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="com.calgen.prodek.sunshine_v2.ACTION_DATA_UPDATED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_detail"/>
+        </receiver>
+        <service
+            android:name=".widget.DetailWidgetRemoteViewsService"
+            android:enabled="@bool/widget_detail_enabled"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <!-- Muzei Extension -->
+        <service
+            android:name=".muzei.WeatherMuzeiSource"
+            android:description="@string/muzei_description"
+            android:icon="@mipmap/ic_muzei"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+            </intent-filter>
+            <meta-data
+                android:name="color"
+                android:value="@color/colorPrimary"/>
+        </service>
 
     </application>
 </manifest>
