@@ -12,5 +12,10 @@ This is an android application which shows real-time weather data by using <a hr
  
     `MyOpenWeatherMapApiKey = "[YOUR_API_KEY_HERE]"`
     You can get an API_KEY from <a href="http://openweathermap.org" target="_blank">Open Weather</a>
+ 5. Also, add the places API key in the AndroidManifest.xml file
+ 
+    `<meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="ENTER_YOU_API_KEY_HERE"/>`
 
 Please report issues by attaching log errors, if possible else screenshots will do.

@@ -1,5 +1,6 @@
 package com.calgen.prodek.sunshine_v2.customView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.calgen.prodek.sunshine_v2.R;
+import com.calgen.prodek.sunshine_v2.activity.SettingsActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 /**
  * Created by Gurupad Mamadapur on 11/8/2016.
@@ -61,8 +65,16 @@ public class LocationEditText extends EditTextPreference {
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // We'll use a toast for now so that we can test our new preference widget.
-                Toast.makeText(getContext(), "Woo!", Toast.LENGTH_LONG).show();
+                Context context = getContext();
+
+                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+
+                Activity settingsActivity = (SettingsActivity) context;
+                try {
+                    settingsActivity.startActivityForResult(intentBuilder.build(settingsActivity), SettingsActivity.PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesNotAvailableException
+                        | GooglePlayServicesRepairableException ignore) {
+                }
             }
         });
 
@@ -86,7 +98,7 @@ public class LocationEditText extends EditTextPreference {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Dialog dialog= getDialog();
+                Dialog dialog = getDialog();
                 if (dialog instanceof AlertDialog) {
                     AlertDialog alertDialog = (AlertDialog) dialog;
                     Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
