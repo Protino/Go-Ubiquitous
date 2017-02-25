@@ -48,6 +48,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public static final int COL_WEATHER_DEGREES = 8;
     public static final int COL_WEATHER_CONDITION_ID = 9;
     public static final String DETAIL_URI = "URI";
+    public static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     private static final int DETAIL_LOADER = 0;
@@ -64,7 +65,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
     };
-    public static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     private Uri mUri;
     private ShareActionProvider mShareActionProvider;
     private String mForecast;
@@ -85,6 +85,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
     }
 
+//Lifecycle start
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -110,10 +111,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
-    private void finishCreatingMenu(Menu menu) {
-        // Retrieve the share menu item
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        menuItem.setIntent(createShareForecastIntent());
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -124,6 +125,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             finishCreatingMenu(menu);
         }
     }
+//Lifecycle end
+
+    private void finishCreatingMenu(Menu menu) {
+        // Retrieve the share menu item
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        menuItem.setIntent(createShareForecastIntent());
+    }
 
     private Intent createShareForecastIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -131,12 +139,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         shareIntent.setType("text/plain");
         shareIntent.putExtra(Intent.EXTRA_TEXT, mForecast + FORECAST_SHARE_HASHTAG);
         return shareIntent;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
-        super.onActivityCreated(savedInstanceState);
     }
 
     public void onLocationChanged(String newLocation) {
@@ -165,7 +167,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             );
         }
         ViewParent viewParent = getView().getParent();
-        if (viewParent instanceof CardView){
+        if (viewParent instanceof CardView) {
             ((CardView) viewParent).setVisibility(View.INVISIBLE);
         }
         return null;
@@ -176,7 +178,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (data != null && data.moveToFirst()) {
 
             ViewParent viewParent = getView().getParent();
-            if (viewParent instanceof CardView){
+            if (viewParent instanceof CardView) {
                 ((CardView) viewParent).setVisibility(View.VISIBLE);
             }
 

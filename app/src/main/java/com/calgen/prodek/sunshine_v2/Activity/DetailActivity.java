@@ -9,6 +9,7 @@ import com.calgen.prodek.sunshine_v2.fragment.DetailFragment;
 
 public class DetailActivity extends AppCompatActivity {
 
+    //Lifecycle start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
             supportPostponeEnterTransition();
         }
     }
+//Lifecycle end
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
