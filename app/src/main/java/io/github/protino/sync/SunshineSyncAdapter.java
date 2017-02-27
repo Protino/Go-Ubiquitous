@@ -53,6 +53,7 @@ import io.github.protino.Utility;
 import io.github.protino.activity.MainActivity;
 import io.github.protino.data.WeatherContract;
 import io.github.protino.muzei.WeatherMuzeiSource;
+import io.github.protino.wearable.WearableDataService;
 
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -125,7 +126,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      * @return a fake account.
      */
-    public static Account getSyncAccount(Context context) {
+    private static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -451,7 +452,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 cVVector.add(weatherValues);
             }
 
-            int inserted = 0;
             // add to database
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
@@ -465,6 +465,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 updateWidgets();
                 updateMuzei();
+                updateWearable();
                 notifyWeather();
             }
             Log.d(LOG_TAG, "Sync Complete. " + cVVector.size() + " Inserted");
@@ -475,6 +476,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             e.printStackTrace();
             setLocationStatus(getContext(), LOCATION_STATUS_SERVER_INVALID);
         }
+    }
+
+    private void updateWearable() {
+        Context context = getContext();
+        context.startService(new Intent(context, WearableDataService.class));
+        Log.d(LOG_TAG, "updateWearable: service started");
     }
 
     private void updateWidgets() {

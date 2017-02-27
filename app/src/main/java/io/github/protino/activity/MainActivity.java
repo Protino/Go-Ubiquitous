@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     private static boolean mTwoPane;
     private String mLocation;
 
+//Lifecycle start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,25 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String location = Utility.getPreferredLocation(this);
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if (null != ff) {
+                ff.onLocationChanged();
+            }
+            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
+            if (null != df) {
+                df.onLocationChanged(location);
+            }
+            mLocation = location;
+        }
+    }
+//Lifecycle end
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -91,6 +111,9 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             case R.id.action_map:
                 openPreferredLocationInMap();
                 return true;
+            case R.id.action_refresh:
+                SunshineSyncAdapter.syncImmediately(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -108,26 +131,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             startActivity(mapIntent);
         } else {
             Log.e(TAG, "Couldn't launch the map activity");
-        }
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String location = Utility.getPreferredLocation(this);
-        // update the location in our second pane using the fragment manager
-        if (location != null && !location.equals(mLocation)) {
-            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
-            if (null != ff) {
-                ff.onLocationChanged();
-            }
-            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_FRAGMENT_TAG);
-            if (null != df) {
-                df.onLocationChanged(location);
-            }
-            mLocation = location;
         }
     }
 

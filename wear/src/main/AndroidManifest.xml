@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="io.github.protino">
 
     <uses-feature android:name="android.hardware.type.watch"/>
-    <uses-permission
-        android:name="android.permission.WAKE_LOCK"/>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault">
 
-        <!-- WeatherWatchFace Service-->
+        <!-- WeatherWatchFace Service -->
         <service
             android:name=".WeatherWatchFaceService"
             android:label="@string/watch_name"
@@ -23,18 +25,31 @@
                 android:name="com.google.android.wearable.watchface.preview"
                 android:resource="@drawable/art_light_clouds"/>
 
-            <!--<meta-data-->
-            <!--android:name="com.google.android.wearable.watchface.preview"-->
-            <!--android:resource="@drawable/preview_analog"/>-->
-            <!--<meta-data-->
-            <!--android:name="com.google.android.wearable.watchface.preview_circular"-->
-            <!--android:resource="@drawable/preview_analog_circular"/>-->
+            <!-- <meta-data -->
+            <!-- android:name="com.google.android.wearable.watchface.preview" -->
+            <!-- android:resource="@drawable/preview_analog"/> -->
+            <!-- <meta-data -->
+            <!-- android:name="com.google.android.wearable.watchface.preview_circular" -->
+            <!-- android:resource="@drawable/preview_analog_circular"/> -->
 
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService"/>
+
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE"/>
             </intent-filter>
         </service>
+
+        <!-- Data layer listener service -->
+        <service android:name=".DataLayerListenerService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED"/>
+                <data
+                    android:host="*"
+                    android:path="@string/weather_data_item_path"
+                    android:scheme="wear"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

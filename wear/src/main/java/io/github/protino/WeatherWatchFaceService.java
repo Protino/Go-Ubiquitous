@@ -35,7 +35,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         return new Engine();
     }
 
-    private class Engine extends CanvasWatchFaceService.Engine {
+    private class Engine extends CanvasWatchFaceService.Engine{
 
 
         private final String LOG_TAG = Engine.class.getSimpleName();
@@ -119,7 +119,6 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
 
             initFormats();
         }
-//Lifecycle end
 
         private Paint createTextPaint(int timeColor, Typeface typeface) {
             Paint paint = new Paint();
@@ -189,16 +188,11 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
 
             // center in the time - both vertically and horizontally
 
-            /* For some reason rect.width() gives incorrect measurements or
-               I haven't fully understood it. Hence using measureText() instead
-               Also, using getFontMetrics is not viable here because space is limited.
-               Accuracy is important. */
-
             Rect rect = new Rect();
-            timeTextPaint.getTextBounds(timeText, 0, minuteString.length(), rect);
+            timeTextPaint.getTextBounds(timeText, 0, timeText.length(), rect);
 
             int timeTextHeight = rect.height();
-            int timeTextWidth = (int) timeTextPaint.measureText(timeText);
+            int timeTextWidth = rect.width();
 
             float timeTextYOffset = upperRect.centerY() + timeTextHeight / 2;
             float timeTextXOffset = upperRect.centerX() - timeTextWidth / 2;
@@ -207,7 +201,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
             rect = new Rect();
             highTempTextPaint.getTextBounds(highTempText, 0, highTempText.length(), rect);
             int highTempTextHeight = rect.height();
-            int highTempTextWidth = (int) highTempTextPaint.measureText(highTempText);
+            int highTempTextWidth = rect.width();
 
             rect = new Rect();
             lowTempTextPaint.getTextBounds(lowTempText, 0, lowTempText.length(), rect);
@@ -216,7 +210,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
             int colonTextWidth = (int) highTempTextPaint.measureText(colon);
 
             int highTempTextYOffset = lowerRect.centerY() + highTempTextHeight / 2;
-            int highTempTextXOffset = lowerRect.centerX() - (highTempTextWidth );
+            int highTempTextXOffset = lowerRect.centerX() - (highTempTextWidth);
 
             int lowTempTextYOffset = lowerRect.centerY() + lowTempTextHeight / 2;
             int lowTempTextXOffset = lowerRect.centerX() + colonTextWidth / 2;
@@ -261,6 +255,12 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             /* the watch face became visible or invisible */
+        }
+
+        @Override
+        public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+            super.onSurfaceChanged(holder, format, width, height);
+            Log.d(LOG_TAG, "onSurfaceChanged: " + width + " " + height);
         }
     }
 }

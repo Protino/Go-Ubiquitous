@@ -25,7 +25,7 @@ android {
     }
 }
 
-ext{
+ext {
     supportLibraryVersion = "25.0.1"
     firebaseLibraryVersion = "9.8.0"
     playServicesVersion = "9.8.0"
@@ -51,6 +51,7 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:${firebaseLibraryVersion}"
     compile "com.google.android.gms:play-services-places:${playServicesVersion}"
     compile "com.google.android.gms:play-services-gcm:${playServicesVersion}"
+    compile "com.google.android.gms:play-services-wearable:${playServicesVersion}"
 }
 
 

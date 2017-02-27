@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Sunshine</string>
+
+    <string name="weather_data_item_path">/wearable_weather_data</string>
+
+
     <string name="watch_name">Sunshine Watch</string>
 
     <string name="two_digit_format">%02d</string>
+
 </resources>
