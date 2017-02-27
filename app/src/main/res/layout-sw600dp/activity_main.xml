@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/fragment_forecast"
-        android:name="com.calgen.prodek.sunshine_v2.fragment.ForecastFragment"
+        android:name="io.github.protino.fragment.ForecastFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_alignEnd="@id/layout_center"

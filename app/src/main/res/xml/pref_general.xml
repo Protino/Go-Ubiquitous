@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.calgen.prodek.sunshine_v2.customView.LocationEditText
+    <io.github.protino.customView.LocationEditText
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:key="@string/pref_location_key"

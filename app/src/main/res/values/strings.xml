@@ -62,8 +62,8 @@
 
     <!-- Account type (for sync-adapter authenticator) -->
     <!-- SyncAdapter related -->
-    <string name="sync_account_type">sunshine.example.com</string>
-    <string name="content_authority">com.example.android.sunshine.app</string>
+    <string name="sync_account_type">app.github.io</string>
+    <string name="content_authority">io.github.protino.app</string>
 
     <!-- Notification Format -->
     <string name="format_notification">

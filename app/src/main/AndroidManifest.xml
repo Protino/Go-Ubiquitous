@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.calgen.prodek.sunshine_v2">
+          package="io.github.protino">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -20,6 +20,9 @@
 
     <!-- Permissions required to access location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    
+    <!-- Wear app permission -->
+    <uses-permission android:name="PROVICE"/>
 
     <application
         android:allowBackup="true"
@@ -30,8 +33,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/GEO_API_KEY"/>
+
         <activity
-            android:name=".activity.MainActivity"
+            android:name="io.github.protino.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Main">
             <intent-filter>
@@ -41,25 +45,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.DetailActivity"
+            android:name="io.github.protino.activity.DetailActivity"
             android:label="@string/title_activity_detail"
             android:theme="@style/AppTheme.Details">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value="io.github.protino.activity.MainActivity"/>
         </activity>
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name="io.github.protino.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value="io.github.protino.activity.MainActivity"/>
         </activity>
 
         <!-- SyncAdapter's dummy authentication service -->
         <service
-            android:name=".sync.SunshineAuthenticatorService"
+            android:name="io.github.protino.sync.SunshineAuthenticatorService"
             >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
@@ -70,14 +74,14 @@
         </service>
 
         <provider
-            android:name=".data.WeatherProvider"
+            android:name="io.github.protino.data.WeatherProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true"/>
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.SunshineSyncService"
+            android:name="io.github.protino.sync.SunshineSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter"/>
@@ -89,14 +93,14 @@
 
         <!-- The Firebase Cloud Messaging receiver and services -->
         <service
-            android:name=".fcm.MyFcmListenerService">
+            android:name="io.github.protino.fcm.MyFcmListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-            android:name=".fcm.MyFirebaseInstanceIdService">
+            android:name="io.github.protino.fcm.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
@@ -116,40 +120,41 @@
 
         <!--Today Widget receiver and service-->
         <receiver
-            android:name=".widget.TodayWidgetProvider"
+            android:name="io.github.protino.widget.TodayWidgetProvider"
             android:label="@string/title_today_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.calgen.prodek.sunshine_v2.ACTION_DATA_UPDATED"/>
+                <action android:name="io.github.protino.ACTION_DATA_UPDATED"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_today"/>
         </receiver>
-        <service android:name=".widget.TodayWidgetIntentService"/>
+        <service android:name="io.github.protino.widget.TodayWidgetIntentService"/>
 
         <!-- Detail Widget receiver and service-->
         <receiver
-            android:name=".widget.DetailWidgetProvider"
+            android:name="io.github.protino.widget.DetailWidgetProvider"
             android:enabled="@bool/widget_detail_enabled"
             android:label="@string/title_detail_widget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.calgen.prodek.sunshine_v2.ACTION_DATA_UPDATED"/>
+                <action android:name="io.github.protino.ACTION_DATA_UPDATED"/>
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_detail"/>
         </receiver>
+
         <service
-            android:name=".widget.DetailWidgetRemoteViewsService"
+            android:name="io.github.protino.widget.DetailWidgetRemoteViewsService"
             android:enabled="@bool/widget_detail_enabled"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <!-- Muzei Extension -->
         <service
-            android:name=".muzei.WeatherMuzeiSource"
+            android:name="io.github.protino.muzei.WeatherMuzeiSource"
             android:description="@string/muzei_description"
             android:icon="@mipmap/ic_muzei"
             android:label="@string/app_name">

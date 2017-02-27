@@ -7,7 +7,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.MainActivity">
+    tools:context="io.github.protino.activity.MainActivity">
 
     <!--
     This layout is a two-pane layout for the Items master/detail flow.
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/fragment_forecast"
-        android:name="com.calgen.prodek.sunshine_v2.fragment.ForecastFragment"
+        android:name="io.github.protino.fragment.ForecastFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"

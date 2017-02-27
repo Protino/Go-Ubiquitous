@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="time_text_size">32dp</dimen>
+    <dimen name="high_temp_text_size">26dp</dimen>
+    <dimen name="low_temp_text_size">22dp</dimen>
+</resources>
