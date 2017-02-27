@@ -1,6 +1,8 @@
 package io.github.protino;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.DateFormat;
@@ -35,11 +38,15 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         return new Engine();
     }
 
-    private class Engine extends CanvasWatchFaceService.Engine{
+    private class Engine extends CanvasWatchFaceService.Engine implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
         private final String LOG_TAG = Engine.class.getSimpleName();
         private final String colon = " : ";
+        private final Context context = WeatherWatchFaceService.this.getApplicationContext();
+        private String weatherIdPrefKey;
+        private String maxTempPrefKey;
+        private String minTempPrefKey;
         private Bitmap weatherIconBitmap;
         private Date date;
         private java.text.DateFormat dateFormat;
@@ -59,11 +66,20 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         private int highTempTextColor;
         private Paint highTempTextPaint;
         private Paint weatherIconBitmapPaint;
+        private SharedPreferences sharedPreferences;
+        private int weatherIconId;
 
         //Lifecycle start
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
+
+
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+            weatherIdPrefKey = getString(R.string.WEATHER_ID_PREF_KEY);
+            maxTempPrefKey = getString(R.string.MAX_TEMP_PREF_KEY);
+            minTempPrefKey = getString(R.string.MIN_TEMP_PREF_KEY);
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(WeatherWatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_VARIABLE)
@@ -71,11 +87,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
                     .setShowSystemUiTime(false)
                     .build());
 
-            Resources resources = WeatherWatchFaceService.this.getResources();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;
-            weatherIconBitmap = BitmapFactory.decodeResource(resources, R.drawable.art_clear, options);
-
+            Resources resources = context.getResources();
 
             twoDigitFormat = resources.getString(R.string.two_digit_format);
             timeTextSize = resources.getDimension(R.dimen.time_text_size);
@@ -109,15 +121,30 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
             lowTempTextPaint = createTextPaint(lowTempTextColor, NORMAL_TYPEFACE);
             lowTempTextPaint.setTextSize(lowTempTextSize);
 
-
-            highTempText = "30°";
-            lowTempText = "24°";
-
+            weatherIconId = sharedPreferences.getInt(weatherIdPrefKey, -1);
+            weatherIconBitmap = getWeatherIconBitmapFromId(resources, weatherIconId);
+            highTempText = sharedPreferences.getString(maxTempPrefKey, "");
+            lowTempText = sharedPreferences.getString(minTempPrefKey, "");
 
             date = new Date();
             calendar = Calendar.getInstance();
 
             initFormats();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        private Bitmap getWeatherIconBitmapFromId(Resources resources, int weatherIconId) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
+            return BitmapFactory.decodeResource(
+                    resources,
+                    Utility.getArtResourceForWeatherCondition(weatherIconId),
+                    options);
         }
 
         private Paint createTextPaint(int timeColor, Typeface typeface) {
@@ -129,7 +156,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void initFormats() {
-            dateFormat = DateFormat.getDateFormat(WeatherWatchFaceService.this);
+            dateFormat = DateFormat.getDateFormat(context);
             dateFormat.setCalendar(calendar);
         }
 
@@ -160,7 +187,7 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
             calendar.setTimeInMillis(now);
 
             /* Data */
-            boolean is24Hour = DateFormat.is24HourFormat(WeatherWatchFaceService.this);
+            boolean is24Hour = DateFormat.is24HourFormat(context);
             String hourString;
             if (is24Hour) {
                 hourString = formatTwoDigitNumber(calendar.get(Calendar.HOUR_OF_DAY));
@@ -217,10 +244,11 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
 
 
             /** place weatherIconBitmap overlapping both upperRect and lowerRect
-             centered along x-axis. {@link weatherIconBitmapOffset}
+             centered along x-axis.
              */
             rect = new Rect();
-            int weatherIconBitmapOffset = (int) (boundsWidth / 8.0);
+            int halfLength = (weatherIconId == -1) ? 12 : 10;
+            int weatherIconBitmapOffset = boundsWidth / halfLength;
             int weatherIconBitmapLeft = lowerRect.centerX() - weatherIconBitmapOffset;
             int weatherIconBitmapTop = upperRectYOffset - weatherIconBitmapOffset;
             int weatherIconBitmapBottom = upperRectYOffset + weatherIconBitmapOffset;
@@ -261,6 +289,21 @@ public class WeatherWatchFaceService extends CanvasWatchFaceService {
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             super.onSurfaceChanged(holder, format, width, height);
             Log.d(LOG_TAG, "onSurfaceChanged: " + width + " " + height);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals(weatherIdPrefKey)) {
+                weatherIconId = sharedPreferences.getInt(weatherIdPrefKey, -1);
+                weatherIconBitmap = getWeatherIconBitmapFromId(getResources(), weatherIconId);
+                invalidate();
+            } else if (key.equals(maxTempPrefKey)) {
+                highTempText = sharedPreferences.getString(maxTempPrefKey, "");
+                invalidate();
+            } else if (key.equals(minTempPrefKey)) {
+                lowTempText = sharedPreferences.getString(minTempPrefKey, "");
+                invalidate();
+            }
         }
     }
 }
