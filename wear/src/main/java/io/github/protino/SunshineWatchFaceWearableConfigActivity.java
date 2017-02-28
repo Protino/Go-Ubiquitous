@@ -16,10 +16,10 @@ import android.widget.FrameLayout;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
-/**
- * Created by Gurupad Mamadapur on 28-Feb-17.
- */
 
+/**
+ * Configuration activity to help user choose background color.
+ */
 public class SunshineWatchFaceWearableConfigActivity extends Activity {
 
     public static String UPPER_RECT_BG_COLOR_PREF_KEY = "upper_rect_background_color";
@@ -33,12 +33,14 @@ public class SunshineWatchFaceWearableConfigActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sunshine_watchface);
+
         sharedPreferences = getDefaultSharedPreferences(getApplicationContext());
+        colors = getResources().getIntArray(R.array.light_colors);
+        currentCheckedPosition = getOriginalCheckedPosition();
+
         recyclerView = (WearableRecyclerView) findViewById(R.id.color_picker);
         recyclerView.setCenterEdgeItems(true);
         setMargins();
-        colors = getResources().getIntArray(R.array.light_colors);
-        currentCheckedPosition = getOriginalCheckedPosition();
         recyclerView.setAdapter(new ColorListAdapter(colors, this, currentCheckedPosition));
         recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -49,6 +51,12 @@ public class SunshineWatchFaceWearableConfigActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        super.onDestroy();
     }
 //Lifecycle end
 
@@ -126,11 +134,5 @@ public class SunshineWatchFaceWearableConfigActivity extends Activity {
                 });
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-        super.onDestroy();
     }
 }

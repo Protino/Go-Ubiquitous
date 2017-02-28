@@ -37,14 +37,10 @@
                 android:resource="@xml/watch_face"/>
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview"
-                android:resource="@drawable/art_light_clouds"/>
-
-            <!-- <meta-data -->
-            <!-- android:name="com.google.android.wearable.watchface.preview" -->
-            <!-- android:resource="@drawable/preview_analog"/> -->
-            <!-- <meta-data -->
-            <!-- android:name="com.google.android.wearable.watchface.preview_circular" -->
-            <!-- android:resource="@drawable/preview_analog_circular"/> -->
+                android:resource="@drawable/preview_square"/>
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_circular"/>
 
             <!-- wearable configuration activity -->
             <meta-data

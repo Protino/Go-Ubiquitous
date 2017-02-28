@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 /**
- * Created by Gurupad Mamadapur on 27-Feb-17.
+ * Utility class
  */
 
 public class Utility {

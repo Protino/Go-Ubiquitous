@@ -167,9 +167,7 @@
         </service>
 
         <!-- Wearable Google Wearable Api Data Service -->
-        <service
-            android:name=".wearable.WearableDataService">
-        </service>
+        <service android:name=".wearable.WearableDataService"/>
     </application>
 
 </manifest>

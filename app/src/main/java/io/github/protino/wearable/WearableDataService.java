@@ -37,19 +37,12 @@ public class WearableDataService extends Service
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(LOG_TAG, "onCreate: ");
         googleApiClient = new GoogleApiClient.Builder(WearableDataService.this)
                 .addApi(Wearable.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
         googleApiClient.connect();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(LOG_TAG, "onDestroy: destroyed");
     }
 //Lifecycle end
 
@@ -58,6 +51,7 @@ public class WearableDataService extends Service
         if (googleApiClient != null && !googleApiClient.isConnected()) {
             googleApiClient.connect();
         }
+        /** Keep the service alive until data_items are sent*/
         return Service.START_STICKY;
     }
 
@@ -75,7 +69,7 @@ public class WearableDataService extends Service
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(LOG_TAG, "onConnectionSuspended: wearable api suspended");
+        //ignore
     }
 
     @Override
@@ -84,6 +78,11 @@ public class WearableDataService extends Service
     }
 
 
+    /**
+     * Gracefully disconnects the client
+     *
+     * @param googleApiClient client that needs to be disconnected
+     */
     private void disconnect(GoogleApiClient googleApiClient) {
         if (googleApiClient != null && (googleApiClient.isConnected() || googleApiClient.isConnecting())) {
             googleApiClient.disconnect();
@@ -120,7 +119,6 @@ public class WearableDataService extends Service
         public void run() {
             try {
                 dataMap = fetchData();
-                Log.d(LOG_TAG, "run: fetched data - " + dataMap.toString());
                 sendData(PATH, dataMap);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -166,6 +164,7 @@ public class WearableDataService extends Service
             if (result.getStatus().isSuccess()) {
                 Log.d(LOG_TAG, "sendData: " + dataMap + " successfully sent");
             } else {
+                // TODO: 28-Feb-17 Add a mechanism to start the service again with exponential backoff
                 Log.e(LOG_TAG, "sendData: Failed to send data item");
             }
             disconnect(googleApiClient);

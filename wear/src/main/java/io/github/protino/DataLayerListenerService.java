@@ -11,10 +11,10 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.WearableListenerService;
 
-/**
- * Created by Gurupad Mamadapur on 27-Feb-17.
- */
 
+/**
+ * Listens for data layer changes. Saves new data in {@link SharedPreferences}.
+ */
 public class DataLayerListenerService extends WearableListenerService {
     private static final String LOG_TAG = DataLayerListenerService.class.getSimpleName();
     private SharedPreferences sharedPreferences;
