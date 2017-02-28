@@ -58,6 +58,11 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         itemChoiceManager.setChoiceMode(choiceMode);
     }
 
+//Lifecycle start
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        itemChoiceManager.onRestoreInstanceState(savedInstanceState);
+    }
+//Lifecycle end
 
     public void setUseTodayLayout(boolean useTodayLayout) {
         mUseTodayLayout = useTodayLayout;
@@ -76,6 +81,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
                     layoutId = R.layout.list_item_forecast;
                     break;
                 }
+                default://ignore
+                    break;
             }
             View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
             view.setFocusable(true);
@@ -138,10 +145,6 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         holder.mLowTempView.setContentDescription(mContext.getString(R.string.a11y_low_temp, lowString));
 
         itemChoiceManager.onBindViewHolder(holder, position);
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        itemChoiceManager.onRestoreInstanceState(savedInstanceState);
     }
 
     public void onSaveInstanceState(Bundle outState) {

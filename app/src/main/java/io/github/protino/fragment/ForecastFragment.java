@@ -100,41 +100,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public ForecastFragment() {
     }
 
+//Lifecycle start
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sp.registerOnSharedPreferenceChangeListener(this);
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sp.unregisterOnSharedPreferenceChangeListener(this);
-        super.onPause();
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_map) {
-            openPreferredLocationInMap();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -184,22 +155,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mRecyclerView.setAdapter(mForecastAdapter);
 
         final View parallaxView = rootView.findViewById(R.id.parallax_bar);
-        if (null != parallaxView) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        int max = parallaxView.getHeight();
-                        if (dy > 0) {
-                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2));
-                        } else {
-                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
-                        }
+        if (null != parallaxView && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int max = parallaxView.getHeight();
+                    if (dy > 0) {
+                        parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2));
+                    } else {
+                        parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
                     }
-                });
-            }
+                }
+            });
         }
 
         final AppBarLayout appbarView = (AppBarLayout) rootView.findViewById(R.id.appbar);
@@ -244,6 +213,45 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (null != mRecyclerView) {
+            mRecyclerView.clearOnScrollListeners();
+        }
+    }
+//Lifecycle end
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_map) {
+            openPreferredLocationInMap();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
@@ -355,14 +363,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (null != mRecyclerView) {
-            mRecyclerView.clearOnScrollListeners();
-        }
-    }
-
-    @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mForecastAdapter.swapCursor(null);
     }
@@ -403,6 +403,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                         if (!Utility.isNetworkAvailable(getActivity())) {
                             message = R.string.empty_forecast_list_no_network;
                         }
+                        break;
                 }
                 tv.setText(message);
             }

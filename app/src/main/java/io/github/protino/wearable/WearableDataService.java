@@ -20,6 +20,7 @@ import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -125,7 +126,7 @@ public class WearableDataService extends Service
                 WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
         };
         private final String location;
-        DataMap dataMap = new DataMap();
+        private DataMap dataMap = new DataMap();
 
         private SendUpdates(String location) {
             this.location = location;
@@ -169,7 +170,7 @@ public class WearableDataService extends Service
                 cursor.close();
                 return dataMap;
             }
-            throw new Exception("No data found in the database");
+            throw new Resources.NotFoundException("No data found in the database");
         }
 
         private void sendData(String path, DataMap dataMap) {

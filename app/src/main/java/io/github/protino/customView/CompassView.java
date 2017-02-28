@@ -25,14 +25,13 @@ import android.view.View;
  * Created by Gurupad on 21-Aug-16.
  */
 public class CompassView extends View {
-    Paint mCircleBorderPaint;
-    Paint mCircleFillPaint;
-    Paint mArrowPaint;
-    int mHeight;
-    int mWidth;
+    public Paint mCircleBorderPaint;
+    public Paint mCircleFillPaint;
+    public Paint mArrowPaint;
+    public int mHeight;
 
-    int speed;
-    int direction;
+    public int speed;
+    public int direction;
 
     public CompassView(Context context, AttributeSet attrs) {
         super(context, attrs);

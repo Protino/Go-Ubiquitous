@@ -124,7 +124,7 @@ public class SunshineWatchFaceWearableConfigActivity extends Activity {
         }
 
         public class CustomViewHolder extends RecyclerView.ViewHolder {
-            CircledImageView imageView;
+            private CircledImageView imageView;
 
             public CustomViewHolder(View view) {
                 super(view);

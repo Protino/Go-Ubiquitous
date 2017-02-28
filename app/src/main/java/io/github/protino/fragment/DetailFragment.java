@@ -102,7 +102,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
     }
 
-//Lifecycle start
+    //Lifecycle start
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -297,5 +297,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        //ignore
     }
 }

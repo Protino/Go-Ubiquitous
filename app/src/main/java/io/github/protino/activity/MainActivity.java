@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     private static boolean mTwoPane;
     private String mLocation;
 
-//Lifecycle start
+    //Lifecycle start
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             case R.id.action_refresh:
                 SunshineSyncAdapter.syncImmediately(this);
                 return true;
+            default: //ignore
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

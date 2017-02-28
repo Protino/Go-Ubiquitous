@@ -30,6 +30,20 @@ public abstract class PollingCheck {
         mTimeout = timeout;
     }
 
+    public static void check(CharSequence message, long timeout, Callable<Boolean> condition)
+            throws Exception {
+        while (timeout > 0) {
+            if (condition.call()) {
+                return;
+            }
+
+            Thread.sleep(TIME_SLICE);
+            timeout -= TIME_SLICE;
+        }
+
+        Assert.fail(message.toString());
+    }
+
     protected abstract boolean check();
 
     public void run() {
@@ -53,19 +67,5 @@ public abstract class PollingCheck {
         }
 
         Assert.fail("unexpected timeout");
-    }
-
-    public static void check(CharSequence message, long timeout, Callable<Boolean> condition)
-            throws Exception {
-        while (timeout > 0) {
-            if (condition.call()) {
-                return;
-            }
-
-            Thread.sleep(TIME_SLICE);
-            timeout -= TIME_SLICE;
-        }
-
-        Assert.fail(message.toString());
     }
 }

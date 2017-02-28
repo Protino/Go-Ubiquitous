@@ -79,6 +79,8 @@ public class SunshineWatchFaceService extends CanvasWatchFaceService {
                         long delayMs = 500 - (timeMs % 500);
                         updateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
                         break;
+                    default: //ignore
+                        break;
                 }
             }
         };

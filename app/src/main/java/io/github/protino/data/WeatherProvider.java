@@ -88,6 +88,18 @@ public class WeatherProvider extends ContentProvider {
         return uriMatcher;
     }
 
+    //Lifecycle start
+    /*
+        Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
+        here.
+     */
+    @Override
+    public boolean onCreate() {
+        mOpenHelper = new WeatherDbHelper(getContext());
+        return true;
+    }
+//Lifecycle end
+
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
         long startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
@@ -126,16 +138,6 @@ public class WeatherProvider extends ContentProvider {
                 null,
                 sortOrder
         );
-    }
-
-    /*
-        Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
-        here.
-     */
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new WeatherDbHelper(getContext());
-        return true;
     }
 
     /*
@@ -287,17 +289,18 @@ public class WeatherProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         final int match = sUriMatcher.match(uri);
+        String tempSelection = selection;
         int rowsUpdated;
-        if (selection == null) selection = "1";
+        if (tempSelection == null) tempSelection = "1";
 
         switch (match) {
             case WEATHER: {
                 normalizeDate(values);
-                rowsUpdated = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values, selection, selectionArgs);
+                rowsUpdated = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values, tempSelection, selectionArgs);
                 break;
             }
             case LOCATION: {
-                rowsUpdated = db.update(WeatherContract.LocationEntry.TABLE_NAME, values, selection, selectionArgs);
+                rowsUpdated = db.update(WeatherContract.LocationEntry.TABLE_NAME, values, tempSelection, selectionArgs);
                 break;
             }
             default:

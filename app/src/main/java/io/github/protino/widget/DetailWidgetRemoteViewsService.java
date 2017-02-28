@@ -53,12 +53,12 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
     private class ListRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
         // these indices must match the projection
-        static final int INDEX_WEATHER_ID = 0;
-        static final int INDEX_WEATHER_DATE = 1;
-        static final int INDEX_WEATHER_CONDITION_ID = 2;
-        static final int INDEX_WEATHER_DESC = 3;
-        static final int INDEX_WEATHER_MAX_TEMP = 4;
-        static final int INDEX_WEATHER_MIN_TEMP = 5;
+        private static final int INDEX_WEATHER_ID = 0;
+        private static final int INDEX_WEATHER_DATE = 1;
+        private static final int INDEX_WEATHER_CONDITION_ID = 2;
+        private static final int INDEX_WEATHER_DESC = 3;
+        private static final int INDEX_WEATHER_MAX_TEMP = 4;
+        private static final int INDEX_WEATHER_MIN_TEMP = 5;
         private final String[] FORECAST_COLUMNS = {
                 WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
                 WeatherContract.WeatherEntry.COLUMN_DATE,
@@ -68,7 +68,7 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
                 WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
         };
         private final String LOG_TAG = ListRemoteViewFactory.class.getSimpleName();
-        Context context;
+        private Context context;
         private Cursor data = null;
 
         ListRemoteViewFactory(Context applicationContext) {

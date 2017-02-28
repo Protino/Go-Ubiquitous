@@ -27,7 +27,7 @@ public class TestDb extends AndroidTestCase {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     // Since we want each test to start with a clean slate
-    void deleteTheDatabase() {
+    private void deleteTheDatabase() {
         mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
     }
 

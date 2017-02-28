@@ -41,13 +41,13 @@ public class ItemChoiceManager {
     /**
      * Running state of which positions are currently checked
      */
-    SparseBooleanArray mCheckStates = new SparseBooleanArray();
+    private SparseBooleanArray mCheckStates = new SparseBooleanArray();
     /**
      * Running state of which IDs are currently checked.
      * If there is a value for a given key, the checked state for that ID is true
      * and the value holds the last known position in the adapter for that id.
      */
-    LongSparseArray<Integer> mCheckedIdStates = new LongSparseArray<Integer>();
+    private LongSparseArray<Integer> mCheckedIdStates = new LongSparseArray<Integer>();
     private int mChoiceMode;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.AdapterDataObserver mAdapterDataObserver = new RecyclerView.AdapterDataObserver() {
@@ -65,6 +65,25 @@ public class ItemChoiceManager {
     public ItemChoiceManager(RecyclerView.Adapter adapter) {
         mAdapter = adapter;
     }
+
+    //Lifecycle start
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        byte[] states = savedInstanceState.getByteArray(SELECTED_ITEMS_KEY);
+        if (null != states) {
+            Parcel inParcel = Parcel.obtain();
+            inParcel.unmarshall(states, 0, states.length);
+            inParcel.setDataPosition(0);
+            mCheckStates = inParcel.readSparseBooleanArray();
+            final int numStates = inParcel.readInt();
+            mCheckedIdStates.clear();
+            for (int i = 0; i < numStates; i++) {
+                final long key = inParcel.readLong();
+                final int value = inParcel.readInt();
+                mCheckedIdStates.put(key, value);
+            }
+        }
+    }
+//Lifecycle end
 
     public void onClick(RecyclerView.ViewHolder vh) {
         if (mChoiceMode == AbsListView.CHOICE_MODE_NONE)
@@ -110,6 +129,8 @@ public class ItemChoiceManager {
             case AbsListView.CHOICE_MODE_MULTIPLE_MODAL: {
                 throw new RuntimeException("Multiple Modal not implemented in ItemChoiceManager.");
             }
+            default://ignore
+                break;
         }
     }
 
@@ -186,23 +207,6 @@ public class ItemChoiceManager {
             ((Checkable) vh.itemView).setChecked(checked);
         }
         ViewCompat.setActivated(vh.itemView, checked);
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        byte[] states = savedInstanceState.getByteArray(SELECTED_ITEMS_KEY);
-        if (null != states) {
-            Parcel inParcel = Parcel.obtain();
-            inParcel.unmarshall(states, 0, states.length);
-            inParcel.setDataPosition(0);
-            mCheckStates = inParcel.readSparseBooleanArray();
-            final int numStates = inParcel.readInt();
-            mCheckedIdStates.clear();
-            for (int i = 0; i < numStates; i++) {
-                final long key = inParcel.readLong();
-                final int value = inParcel.readInt();
-                mCheckedIdStates.put(key, value);
-            }
-        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
