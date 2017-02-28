@@ -3,7 +3,7 @@
 Go-Ubiquitous
 =============
 * [About](#about)
-* [Build configuration](#build-configurations)
+* [Build Configuration](#build-configurations)
 * [Screenshots](#screenshots)
 * [Checklist](#checklist)
 * [License](#license)
@@ -28,15 +28,18 @@ What Will I Learn?
 ```
 
 
-### Build configuration
+### Build Configuration
 
  1. Clone the repository.
  2. Add google-services.json created by firebase console.
  3. Create gradle.properties in the root folder.
  4. Initialize the following variables in the file.
 
-    `MyOpenWeatherMapApiKey = "[YOUR_API_KEY_HERE]"`
-    `MyGeoApiKey = "[YOUR_API_KEY_HERE]"`
+    ```
+    MyOpenWeatherMapApiKey = "[YOUR_API_KEY_HERE]"
+    MyGeoApiKey = "[YOUR_API_KEY_HERE]"
+    ```
+
     You can get an API_KEY from <a href="http://openweathermap.org" target="_blank">Open Weather Map</a>
 
  To test the wearable app you can use refresh menu item in the main activity, which sends data item to the wearable.
@@ -50,7 +53,7 @@ What Will I Learn?
 </p>
 
 <p align="center">
-<img src="https://drive.google.com/open?id=0B7HoD_UwfapHd0xZOVo4M0FjMmM" alt="App Gif">
+<img src="https://drive.google.com/uc?id=0B7HoD_UwfapHd0xZOVo4M0FjMmM" alt="App Gif">
 </p>
 
 ### Checklist
@@ -60,7 +63,7 @@ What Will I Learn?
  - [x] Code UI reflecting mocks.
  - [x] Display dummy data.
  - [x] Fetch real data from phone and display it.
- - [ ] Add configuration to change background. `Partially complete`.
+ - [ ] Add configuration to change background. (`Partially complete`).
  - [x] Make battery saving optimizations.
  - [x] Test for rubric specifications.
  - [x] Implement listener on phone and make wearable request data on startup.
