@@ -3,7 +3,7 @@
 Go-Ubiquitous
 =============
 * [About](#about)
-* [Build Configuration](#build-configurations)
+* [Build Configuration](#build-configuration)
 * [Screenshots](#screenshots)
 * [Checklist](#checklist)
 * [License](#license)
