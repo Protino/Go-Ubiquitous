@@ -164,6 +164,7 @@ public class WearableDataService extends Service
                 String formattedMaxTemp = Utility.formatTemperature(context, maxTemp);
                 String formattedMinTemp = Utility.formatTemperature(context, minTemp);
 
+                dataMap.putInt("timestamp", (int) (System.currentTimeMillis() / 1e3));
                 dataMap.putInt("weather_id", weatherId);
                 dataMap.putString("max_temp", formattedMaxTemp);
                 dataMap.putString("min_temp", formattedMinTemp);

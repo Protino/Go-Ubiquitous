@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/def8b5a8b1dd416ea8e4878b8af239b5)](https://www.codacy.com/app/gurupadmamadapur/Go-Ubiquitous?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Protino/Go-Ubiquitous&amp;utm_campaign=Badge_Grade)
+
 Go-Ubiquitous
 =============
 * [About](#about)
@@ -61,7 +63,7 @@ What Will I Learn?
  - [ ] Add configuration to change background. `Partially complete`.
  - [x] Make battery saving optimizations.
  - [x] Test for rubric specifications.
- - [ ] Implement listener of phone and make wearable request data.
+ - [x] Implement listener on phone and make wearable request data on startup.
  - [ ] Add simple animations.
 
 ### LICENSE

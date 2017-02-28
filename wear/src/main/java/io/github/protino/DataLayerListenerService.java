@@ -56,9 +56,9 @@ public class DataLayerListenerService extends WearableListenerService {
             if (event.getType() == DataEvent.TYPE_DELETED) {
                 Log.d(LOG_TAG, "DataItem deleted: " + event.getDataItem());
             } else if (event.getType() == DataEvent.TYPE_CHANGED) {
+                Log.d(LOG_TAG, "onDataChanged: ");
                 DataItem dataItem = event.getDataItem();
                 DataMap dataMap = DataMapItem.fromDataItem(dataItem).getDataMap();
-
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt(weatherIdPrefKey, dataMap.getInt(weatherIdPrefKey));
                 editor.putString(maxTempPrefKey, dataMap.getString(maxTempPrefKey));

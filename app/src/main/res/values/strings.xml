@@ -193,4 +193,6 @@
     <!--Related to attributions-->
     <string name="attribution_text">Powered by Google</string>
 
+    <string name="wearable_data_update_request_path">/request_for_weather_data</string>
+
 </resources>
