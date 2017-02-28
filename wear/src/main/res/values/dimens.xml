@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="time_text_size">32dp</dimen>
-    <dimen name="high_temp_text_size">26dp</dimen>
-    <dimen name="low_temp_text_size">22dp</dimen>
+    <dimen name="time_text_size">32sp</dimen>
+    <dimen name="high_temp_text_size">26sp</dimen>
+    <dimen name="low_temp_text_size">22sp</dimen>
+    <dimen name="date_text_size">16sp</dimen>
+    <dimen name="keyLine">16dp</dimen>
+    <dimen name="header_text_size">22sp</dimen>
+    <dimen name="list_item_margin">8dp</dimen>
+    <dimen name="config_margin">36dp</dimen>
 </resources>

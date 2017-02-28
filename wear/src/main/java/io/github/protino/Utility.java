@@ -1,5 +1,8 @@
 package io.github.protino;
 
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+
 /**
  * Created by Gurupad Mamadapur on 27-Feb-17.
  */
@@ -39,6 +42,25 @@ public class Utility {
         } else if (weatherId >= 802 && weatherId <= 804) {
             return R.drawable.art_clouds;
         }
-        return R.drawable.ic_cloud_off_white_18dp;
+        return R.drawable.ic_cloud_off_black_18dp;
+    }
+
+    /**
+     * @param dp dp value
+     * @return converted px value
+     */
+    public static int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    /**
+     * @param px dp value
+     * @return converted dp value
+     */
+
+    public static int pxToDp(int px) {
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

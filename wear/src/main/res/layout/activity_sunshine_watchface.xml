@@ -1,0 +1,27 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.wearable.view.WearableRecyclerView
+        android:id="@+id/color_picker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:scrollbars="vertical"/>
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/dark_grey"
+        android:fontFamily="sans-serif-condensed-light"
+        android:gravity="center"
+        android:padding="@dimen/keyLine"
+        android:text="@string/Background"
+        android:textSize="@dimen/header_text_size"/>
+
+</FrameLayout>
