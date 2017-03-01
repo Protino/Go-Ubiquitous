@@ -1,4 +1,4 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/def8b5a8b1dd416ea8e4878b8af239b5)](https://www.codacy.com/app/gurupadmamadapur/Go-Ubiquitous?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Protino/Go-Ubiquitous&amp;utm_campaign=Badge_Grade)
+﻿[![Codacy Badge](https://api.codacy.com/project/badge/Grade/def8b5a8b1dd416ea8e4878b8af239b5)](https://www.codacy.com/app/gurupadmamadapur/Go-Ubiquitous?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Protino/Go-Ubiquitous&amp;utm_campaign=Badge_Grade)
 
 Go-Ubiquitous
 =============
@@ -31,7 +31,7 @@ What Will I Learn?
 ### Build Configuration
 
  1. Clone the repository.
- 2. Add google-services.json created by firebase console.
+ 2. Add google-services.json created by firebase console. Make sure the package is correctly set.
  3. Create gradle.properties in the root folder.
  4. Initialize the following variables in the file.
 
@@ -53,7 +53,7 @@ What Will I Learn?
 </p>
 
 <p align="center">
-<img src="https://drive.google.com/uc?id=0B7HoD_UwfapHd0xZOVo4M0FjMmM" alt="App Gif">
+<img src="https://drive.google.com/uc?id=0B7HoD_UwfapHWFEtbml3MTNwY1E" alt="App Gif">
 </p>
 
 ### Checklist
